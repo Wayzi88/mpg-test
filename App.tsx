@@ -1,24 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import styled from 'styled-components';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from './src/styles/colors';
+import 'react-native-gesture-handler';
+import { RootNavigator } from './src/navigation/RootNavigator';
 
-export const App = () => {
+// npx expo start --tunnel
+
+const App = () => {
+  // const navigationRef = useNavigationContainerRef();
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your app! </Text>
-        <StatusBar style="auto" />
-      </View>
+      <SafeContainer>
+        <RootNavigator />
+      </SafeContainer>
     </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const SafeContainer = styled(SafeAreaView)`
+  background-color: ${colors.white};
+  justify-content: center;
+  flex: 1;
+`;
+
+export default App;
