@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from './src/styles/colors';
 import 'react-native-gesture-handler';
 import { RootNavigator } from './src/navigation/RootNavigator';
+import { PaperProvider } from 'react-native-paper';
 
 // npx expo start --tunnel
 
@@ -12,9 +13,11 @@ const App = () => {
   // const navigationRef = useNavigationContainerRef();
   return (
     <NavigationContainer>
-      <SafeContainer>
-        <RootNavigator />
-      </SafeContainer>
+      <PaperProvider>
+        <SafeContainer>
+          <RootNavigator />
+        </SafeContainer>
+      </PaperProvider>
     </NavigationContainer>
   );
 };
