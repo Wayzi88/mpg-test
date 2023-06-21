@@ -1,11 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { Header } from '../components/Header';
-import { Home } from '../components/Home';
+import { HomeScreen } from '../screens/HomeScreen';
+import { PlayerDetailsScreen } from '../screens/PlayerDetailsScreen';
 // import { useNavigation } from '@react-navigation/native';
 
 export const RootNavigator = () => {
   const Stack = createStackNavigator();
+  // const Stack = createStackNavigator<RootStackParamList>();
 
   // const { navigate } = useNavigation();
 
@@ -14,12 +16,35 @@ export const RootNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
-        component={Home}
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          header: () => <Header />,
+        }}
+      />
+      <Stack.Screen
+        name="PlayerDetailsScreen"
+        component={PlayerDetailsScreen}
         options={{
           header: () => <Header hasNavIcons />,
         }}
       />
+      {/* {(p) => {
+          const { params, ...rest } = p.route;
+          return (
+            <PlayerDetailsScreen
+              route={{
+                ...rest,
+                params: params as unknown as TimesScreenRouteParams,
+              }}
+              onAddToCart={() =>
+                navigate('GamingPassGiftStack', {
+                  screen: 'GamingPassesScreen',
+                })
+              }
+            />
+          );
+        }} */}
     </Stack.Navigator>
   );
 };

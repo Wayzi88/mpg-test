@@ -6,19 +6,22 @@ import { colors } from './src/styles/colors';
 import 'react-native-gesture-handler';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { PaperProvider } from 'react-native-paper';
+import { StoreProvider } from './src/contexts/player.context';
 
 // npx expo start --tunnel
 
 const App = () => {
   // const navigationRef = useNavigationContainerRef();
   return (
-    <NavigationContainer>
-      <PaperProvider>
-        <SafeContainer>
-          <RootNavigator />
-        </SafeContainer>
-      </PaperProvider>
-    </NavigationContainer>
+    <StoreProvider>
+      <NavigationContainer>
+        <PaperProvider>
+          <SafeContainer>
+            <RootNavigator />
+          </SafeContainer>
+        </PaperProvider>
+      </NavigationContainer>
+    </StoreProvider>
   );
 };
 
