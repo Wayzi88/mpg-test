@@ -3,10 +3,11 @@ import React from 'react';
 import { Header } from '../components/Header';
 import { HomeScreen } from '../screens/HomeScreen';
 import { PlayerDetailsScreen } from '../screens/PlayerDetailsScreen';
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 export const RootNavigator = () => {
   const Stack = createStackNavigator();
+  const { goBack } = useNavigation();
   // const Stack = createStackNavigator<RootStackParamList>();
 
   // const { navigate } = useNavigation();
@@ -26,7 +27,7 @@ export const RootNavigator = () => {
         name="PlayerDetailsScreen"
         component={PlayerDetailsScreen}
         options={{
-          header: () => <Header hasNavIcons />,
+          header: () => <Header onBack={goBack} />,
         }}
       />
       {/* {(p) => {

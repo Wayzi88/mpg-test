@@ -2,20 +2,17 @@ import React from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
 import BackIcon from '../assets/icons/back-arrow-left.svg';
-import CloseIcon from '../assets/icons/close.svg';
 import { colors } from '../styles/colors';
 import { Image } from 'expo-image';
 
 interface HeaderProps {
-  hasNavIcons?: boolean;
-  onClose?: () => void;
   onBack?: () => void;
 }
 
-export const Header = ({ onClose, onBack, hasNavIcons = false }: HeaderProps) => {
+export const Header = ({ onBack }: HeaderProps) => {
   return (
     <Container>
-      {hasNavIcons && (
+      {onBack && (
         <Button onPress={onBack}>
           <BackIcon width={40} height={40} color={colors.white} />
         </Button>
@@ -27,11 +24,6 @@ export const Header = ({ onClose, onBack, hasNavIcons = false }: HeaderProps) =>
           contentFit="contain"
         />
       </TitleContainer>
-      {hasNavIcons && (
-        <Button onPress={onClose}>
-          <CloseIcon width={40} height={40} color={colors.white} />
-        </Button>
-      )}
     </Container>
   );
 };
@@ -43,7 +35,6 @@ const Container = styled(View)`
   justify-content: center;
   width: 100%;
   height: 80px;
-  padding: 0 20px;
   background-color: ${colors.primary};
 `;
 

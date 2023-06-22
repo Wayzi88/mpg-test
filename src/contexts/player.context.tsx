@@ -5,6 +5,7 @@ interface Player {
   fullName: string;
   clubName: string;
   id: string;
+  position: string;
 }
 
 interface MyContextData {
@@ -12,7 +13,7 @@ interface MyContextData {
   updatePlayer: (updatedPlayer: Player) => void;
 }
 
-export const PlayerContext = createContext<MyContextData | undefined>(undefined);
+export const PlayerContext = createContext<MyContextData | null>(null);
 
 export interface StoreProviderProps {
   children: ReactNode;

@@ -12,30 +12,26 @@ interface PlayerCardProps {
   firstName: string;
   lastName: string;
   clubId: string;
+  ultraPosition: number;
 }
 
-export const PlayerCard = ({ id, firstName, lastName, clubId }: PlayerCardProps) => {
+export const PlayerCard = ({ id, firstName, lastName, clubId, ultraPosition }: PlayerCardProps) => {
   const { navigate } = useNavigation();
-  const { player, update } = useContext(PlayerContext);
+  const { update } = useContext(PlayerContext);
 
   const handleOnPress = () => {
     fetchApi('championship-clubs').then((res) => {
       const club = _.find(res.championshipClubs, { id: clubId });
-      const clubName = club.shortName;
+      const clubName = club.name['fr-FR'];
       const currentPlayer = {
-        fullName: firstName + lastName,
+        fullName: firstName + ' ' + lastName,
         clubName,
         id,
       };
       update(currentPlayer);
     });
 
-    // hack to check if the context has been updated
-    // useEffect(() => {
-    //   if (player && player.id === id) {
     navigate('PlayerDetailsScreen');
-    //   }
-    // }, [player]);
   };
   return (
     <View style={styles.mainContainer}>
@@ -44,9 +40,7 @@ export const PlayerCard = ({ id, firstName, lastName, clubId }: PlayerCardProps)
       </Text>
       <TouchableOpacity style={styles.ctaContainer} onPress={handleOnPress}>
         <Text>Plus de détails</Text>
-        {/* <Pressable> */}
         <PlusIcon height={'28px'} width={'28px'} style={styles.cta} />
-        {/* </Pressable> */}
       </TouchableOpacity>
     </View>
   );
