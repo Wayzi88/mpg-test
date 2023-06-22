@@ -58,7 +58,6 @@ export const Players = ({ players }: any) => {
             firstName={item.firstName}
             lastName={item.lastName}
             clubId={item.clubId}
-            ultraPosition={item.ultraPosition}
           />
         )}
       />
