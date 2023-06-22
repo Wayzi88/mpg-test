@@ -9,14 +9,15 @@ export const HomeScreen = () => {
   const [players, setPlayers] = useState<any>();
 
   useEffect(() => {
-    fetchApi('championship-players-pool/1').then((res) => {
+    void fetchApi('championship-players-pool/1').then((res) => {
       setPlayers(res.poolPlayers);
     });
   }, []);
 
-  return <Container>{!players ? <LoadingSpinner /> : <Players players={players} />}</Container>;
+  return <Container>{players ? <Players players={players} /> : <LoadingSpinner />}</Container>;
 };
 
 const Container = styled(View)`
   flex: 1;
+  justify-content: center;
 `;
