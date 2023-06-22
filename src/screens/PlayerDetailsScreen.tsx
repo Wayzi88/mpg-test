@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { PlayerContext } from '../contexts/player.context';
 import { fetchApi } from '../utils/fetchApi';
-import { playerPosition } from '../utils/playerPosition';
+import { ultraPositionToPosition } from '../utils/playerPosition';
 import { styled } from 'styled-components';
 import { colors } from '../styles/colors';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -22,10 +22,10 @@ export const PlayerDetailsScreen = () => {
   const [playerDetails, setPlayerDetails] = useState<PlayerDetails>();
   useEffect(() => {
     if (player) {
-      fetchApi(`championship-player-stats/${player.id}/2022`).then((res) => {
-        const position = playerPosition(res.ultraPosition);
+      void fetchApi(`championship-player-stats/${player.id}/2022`).then((res) => {
+        const position = ultraPositionToPosition(res.ultraPosition);
 
-        const details = Object.values(res.championships)[0];
+        const details: any = Object.values(res.championships)[0];
 
         setPlayerDetails({
           position,
