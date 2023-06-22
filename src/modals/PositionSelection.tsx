@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type Dispatch, type SetStateAction } from 'react';
 import { StyleSheet, Modal, View, Text, Pressable } from 'react-native';
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
@@ -7,9 +7,9 @@ import { PositionEnum } from '../enums/position.enum';
 
 interface PositionSelectionModalProps {
   modalVisible: boolean;
-  setModalVisible: (arg: boolean) => void;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
   checkedPositions: string[] | [];
-  setCheckedPositions: (arg: string | string[]) => void;
+  setCheckedPositions: Dispatch<SetStateAction<[] | string[]>>;
 }
 
 export const PositionSelectionModal = ({

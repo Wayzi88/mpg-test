@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../styles/colors';
@@ -12,15 +12,14 @@ interface PlayerCardProps {
   firstName: string;
   lastName: string;
   clubId: string;
-  ultraPosition: number;
 }
 
-export const PlayerCard = ({ id, firstName, lastName, clubId, ultraPosition }: PlayerCardProps) => {
+export const PlayerCard = ({ id, firstName, lastName, clubId }: PlayerCardProps) => {
   const { navigate } = useNavigation();
   const { update } = useContext(PlayerContext);
 
   const handleOnPress = () => {
-    fetchApi('championship-clubs').then((res) => {
+    void fetchApi('championship-clubs').then((res) => {
       const club = _.find(res.championshipClubs, { id: clubId });
       const clubName = club.name['fr-FR'];
       const currentPlayer = {
