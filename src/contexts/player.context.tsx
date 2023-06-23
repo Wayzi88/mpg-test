@@ -8,9 +8,9 @@ interface Player {
   position: string;
 }
 
-interface MyContextData {
-  playerModel: Player;
-  updatePlayer: (updatedPlayer: Player) => void;
+export interface MyContextData {
+  player: Player | undefined;
+  update: (updatedPlayer: Player) => void;
 }
 
 export const PlayerContext = createContext<MyContextData | null>(null);

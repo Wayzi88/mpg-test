@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../styles/colors';
 import PlusIcon from '../assets/icons/plus.svg';
 import { PlayerContext } from '../contexts/player.context';
 import { fetchApi } from '../utils/fetchApi';
 import _ from 'lodash';
+import { type StackNavigationProp } from '@react-navigation/stack';
+import { type RootStackParamList } from '../navigation/types';
+import { styled } from 'styled-components';
 
 interface PlayerCardProps {
   id: string;
@@ -15,7 +18,7 @@ interface PlayerCardProps {
 }
 
 export const PlayerCard = ({ id, firstName, lastName, clubId }: PlayerCardProps) => {
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { update } = useContext(PlayerContext);
 
   const handleOnPress = () => {
@@ -33,36 +36,32 @@ export const PlayerCard = ({ id, firstName, lastName, clubId }: PlayerCardProps)
     navigate('PlayerDetailsScreen');
   };
   return (
-    <View style={styles.mainContainer}>
+    <MainContainer onPress={handleOnPress}>
       <Text>
         {firstName} {lastName}
       </Text>
-      <TouchableOpacity style={styles.ctaContainer} onPress={handleOnPress}>
+      <MoreDetailsContainer>
         <Text>Plus de détails</Text>
-        <PlusIcon height={'28px'} width={'28px'} style={styles.cta} />
-      </TouchableOpacity>
-    </View>
+        <PlusIcon height={'28px'} width={'28px'} style={{ color: colors.primary }} />
+      </MoreDetailsContainer>
+    </MainContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGrey,
-    height: 70,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: 20,
-  },
-  ctaContainer: {
-    width: '40%',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cta: {
-    color: colors.primary,
-  },
-});
+const MainContainer = styled(TouchableOpacity)`
+  border-bottom-width: 1px;
+  border-bottom-color: ${colors.lightGrey};
+  height: 70px;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+`;
+
+const MoreDetailsContainer = styled(View)`
+  width: 40%;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`;

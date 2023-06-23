@@ -1,4 +1,4 @@
-import React, { type Dispatch, type SetStateAction } from 'react';
+import React, { useState, type Dispatch, type SetStateAction } from 'react';
 import { StyleSheet, Modal, View, Text, Pressable } from 'react-native';
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
@@ -8,27 +8,31 @@ import { PositionEnum } from '../enums/position.enum';
 interface PositionSelectionModalProps {
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
-  checkedPositions: string[] | [];
   setCheckedPositions: Dispatch<SetStateAction<[] | string[]>>;
 }
 
 export const PositionSelectionModal = ({
   modalVisible,
   setModalVisible,
-  checkedPositions,
   setCheckedPositions,
 }: PositionSelectionModalProps) => {
-  const playerPositionArray = Object.values(PositionEnum);
+  const playerPositionArray: string[] = Object.values(PositionEnum);
+  const [totalFilters, setTotalFilters] = useState<string[] | []>([]);
 
   const handlePositionSelection = (position: string) => {
-    const isSelected = checkedPositions.includes(position);
+    const isSelected = totalFilters.includes(position);
     if (isSelected) {
-      // If already selected, remove it from the checkedPositions array
-      setCheckedPositions(checkedPositions.filter((pos) => pos !== position));
+      // If already selected, remove it from the totalFilters array
+      setTotalFilters(totalFilters.filter((pos) => pos !== position));
     } else {
-      // If not selected, add it to the checkedPositions array
-      setCheckedPositions([...checkedPositions, position]);
+      // If not selected, add it to the totalFilters array
+      setTotalFilters([...totalFilters, position]);
     }
+  };
+
+  const handleOnValidate = () => {
+    setCheckedPositions(totalFilters);
+    setModalVisible(!modalVisible);
   };
 
   return (
@@ -43,20 +47,22 @@ export const PositionSelectionModal = ({
       <ModalContainer>
         <ModalContentContainer style={styles.modalView}>
           <CheckBoxesContainer>
-            {playerPositionArray.map((position: string) => (
+            {playerPositionArray.map((position) => (
               <CheckBoxContainer key={position}>
                 <Checkbox
-                  value={checkedPositions.includes(position)}
-                  onValueChange={() => handlePositionSelection(position)}
-                  color={checkedPositions.includes(position) ? colors.primary : undefined}
+                  value={totalFilters ? totalFilters.includes(position) : false}
+                  onValueChange={() => {
+                    handlePositionSelection(position);
+                  }}
+                  color={totalFilters?.includes(position) ? colors.primary : undefined}
                 />
                 <PlayerPosition>{position}</PlayerPosition>
               </CheckBoxContainer>
             ))}
           </CheckBoxesContainer>
 
-          <FilterButton style={styles.button} onPress={() => setModalVisible(!modalVisible)}>
-            <ButtonText>Filtrer</ButtonText>
+          <FilterButton style={styles.button} onPress={handleOnValidate}>
+            <ButtonText>Valider</ButtonText>
           </FilterButton>
         </ModalContentContainer>
       </ModalContainer>
@@ -110,10 +116,10 @@ const PlayerPosition = styled(Text)`
   margin-left: 10px;
 `;
 
-export const FilterButton = styled(Pressable)`
+const FilterButton = styled(Pressable)`
   border-radius: 10px;
-  padding: 20px 40px;
-  background-color: ${colors.grey};
+  padding: 20px 30px;
+  background-color: ${colors.primary};
 `;
 
 export const ButtonText = styled(Text)`

@@ -8,7 +8,7 @@ import { colors } from '../styles/colors';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 
 interface PlayerDetails {
-  position: string;
+  position: string | null;
   rating: number;
   quotation: number;
   playedMatches: number;
@@ -18,7 +18,7 @@ interface PlayerDetails {
 }
 
 export const PlayerDetailsScreen = () => {
-  const { player } = useContext(PlayerContext);
+  const { player } = useContext(PlayerContext) ?? {};
   const [playerDetails, setPlayerDetails] = useState<PlayerDetails>();
   useEffect(() => {
     if (player) {
@@ -28,7 +28,7 @@ export const PlayerDetailsScreen = () => {
         const details: any = Object.values(res.championships)[0];
 
         setPlayerDetails({
-          position,
+          position: position ?? null,
           rating: details.keySeasonStats.averageRating,
           quotation: details.keySeasonStats.quotation,
           concededGoals: details.total.stats.totalGoalsConceded,
