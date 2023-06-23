@@ -6,6 +6,7 @@ import { ultraPositionToPosition } from '../utils/playerPosition';
 import { styled } from 'styled-components';
 import { colors } from '../styles/colors';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { Error } from '../components/Error';
 
 interface PlayerDetails {
   position: string | null;
@@ -20,29 +21,41 @@ interface PlayerDetails {
 export const PlayerDetailsScreen = () => {
   const { player } = useContext(PlayerContext) ?? {};
   const [playerDetails, setPlayerDetails] = useState<PlayerDetails>();
+  const [isLocalError, setIsLocalError] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
     if (player) {
-      void fetchApi(`championship-player-stats/${player.id}/2022`).then((res) => {
-        const position = ultraPositionToPosition(res.ultraPosition);
+      void fetchApi(`championship-player-stats/${player.id}/2022`)
+        .then((res) => {
+          const position = ultraPositionToPosition(res.ultraPosition);
 
-        const details: any = Object.values(res.championships)[0];
+          const details: any = Object.values(res.championships)[0];
 
-        setPlayerDetails({
-          position: position ?? null,
-          rating: details.keySeasonStats.averageRating,
-          quotation: details.keySeasonStats.quotation,
-          concededGoals: details.total.stats.totalGoalsConceded,
-          playedMatches: details.total.stats.totalPlayedMatches,
-          goals: details.total.stats.totalGoals,
-          fouls: details.total.stats.totalFouls,
+          setPlayerDetails({
+            position: position ?? null,
+            rating: details.keySeasonStats.averageRating,
+            quotation: details.keySeasonStats.quotation,
+            concededGoals: details.total.stats.totalGoalsConceded,
+            playedMatches: details.total.stats.totalPlayedMatches,
+            goals: details.total.stats.totalGoals,
+            fouls: details.total.stats.totalFouls,
+          });
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log('error:', err);
+          setIsLocalError('Erreur lors du chargement des données');
+          setIsLoading(false);
         });
-      });
     }
   }, [player]);
 
+  if (isLocalError) return <Error title={isLocalError} />;
+
   return (
     <MainContainer>
-      {playerDetails && player ? (
+      {!isLoading && player && playerDetails ? (
         <CardContainer>
           <CardTitle>{player.fullName}</CardTitle>
           <Text>

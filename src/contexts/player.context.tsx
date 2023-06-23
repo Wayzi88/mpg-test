@@ -5,12 +5,14 @@ interface Player {
   fullName: string;
   clubName: string;
   id: string;
-  position: string;
+  position?: string;
 }
 
 export interface MyContextData {
-  player: Player | undefined;
-  update: (updatedPlayer: Player) => void;
+  player: Player;
+  updatePlayer: (updatedPlayer: Player) => void;
+  error: string;
+  updateError: (title: string) => void;
 }
 
 export const PlayerContext = createContext<MyContextData | null>(null);
@@ -22,12 +24,18 @@ export interface StoreProviderProps {
 export const StoreProvider = (props: StoreProviderProps) => {
   const { children } = props;
   const [player, setPlayer] = useState<Player>();
-  const update = (newPlayer: Player) => {
+  const [error, setIsError] = useState('');
+  const updatePlayer = (newPlayer: Player) => {
     setPlayer(newPlayer);
+  };
+  const updateError = (title: string) => {
+    setIsError(title);
   };
   const contextValue = {
     player,
-    update,
+    updatePlayer,
+    error,
+    updateError,
   };
 
   return <PlayerContext.Provider value={contextValue}>{children}</PlayerContext.Provider>;

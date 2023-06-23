@@ -17,7 +17,7 @@ export const PositionSelectionModal = ({
   setCheckedPositions,
 }: PositionSelectionModalProps) => {
   const playerPositionArray: string[] = Object.values(PositionEnum);
-  const [totalFilters, setTotalFilters] = useState<string[] | []>([]);
+  const [totalFilters, setTotalFilters] = useState<string[]>([]);
 
   const handlePositionSelection = (position: string) => {
     const isSelected = totalFilters.includes(position);
@@ -35,6 +35,11 @@ export const PositionSelectionModal = ({
     setModalVisible(!modalVisible);
   };
 
+  const handleOnReset = () => {
+    setTotalFilters([]);
+    setCheckedPositions([]);
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -50,19 +55,26 @@ export const PositionSelectionModal = ({
             {playerPositionArray.map((position) => (
               <CheckBoxContainer key={position}>
                 <Checkbox
-                  value={totalFilters ? totalFilters.includes(position) : false}
+                  value={totalFilters.length > 0 ? totalFilters.includes(position) : false}
                   onValueChange={() => {
                     handlePositionSelection(position);
                   }}
-                  color={totalFilters?.includes(position) ? colors.primary : undefined}
+                  color={
+                    totalFilters.length > 0 && totalFilters.includes(position)
+                      ? colors.primary
+                      : undefined
+                  }
                 />
                 <PlayerPosition>{position}</PlayerPosition>
               </CheckBoxContainer>
             ))}
           </CheckBoxesContainer>
 
-          <FilterButton style={styles.button} onPress={handleOnValidate}>
+          <FilterButton style={styles.button} onPress={handleOnValidate} color={colors.primary}>
             <ButtonText>Valider</ButtonText>
+          </FilterButton>
+          <FilterButton style={styles.button} onPress={handleOnReset} color={colors.secondary}>
+            <ButtonText>Réinitialiser</ButtonText>
           </FilterButton>
         </ModalContentContainer>
       </ModalContainer>
@@ -80,7 +92,7 @@ const ModalContentContainer = styled(View)`
   background-color: ${colors.white};
   border-radius: 20px;
   width: 80%;
-  height: 70%;
+  height: 80%;
   align-items: center;
   justify-content: center;
 `;
@@ -116,10 +128,13 @@ const PlayerPosition = styled(Text)`
   margin-left: 10px;
 `;
 
-const FilterButton = styled(Pressable)`
+const FilterButton = styled(Pressable)<FilterButtonProps>`
   border-radius: 10px;
   padding: 20px 30px;
-  background-color: ${colors.primary};
+  width: 60%;
+  /* background-color: ${colors.primary}; */
+  background-color: ${(props: FilterButtonProps) => props.color};
+  margin-top: 10px;
 `;
 
 export const ButtonText = styled(Text)`
@@ -127,3 +142,7 @@ export const ButtonText = styled(Text)`
   color: ${colors.white};
   text-align: center;
 `;
+
+interface FilterButtonProps {
+  color: string;
+}

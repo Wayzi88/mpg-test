@@ -19,22 +19,33 @@ interface PlayerCardProps {
 
 export const PlayerCard = ({ id, firstName, lastName, clubId }: PlayerCardProps) => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { update } = useContext(PlayerContext);
+  const { updatePlayer, updateError } = useContext(PlayerContext) ?? {};
 
-  const handleOnPress = () => {
-    void fetchApi('championship-clubs').then((res) => {
-      const club = _.find(res.championshipClubs, { id: clubId });
+  const handleOnPress = async () => {
+    try {
+      const clubs: any = await fetchApi('championship-clubs');
+      const club = _.find(clubs.championshipClubs, { id: clubId });
+
       const clubName = club.name['fr-FR'];
       const currentPlayer = {
         fullName: firstName + ' ' + lastName,
         clubName,
         id,
       };
-      update(currentPlayer);
-    });
-
-    navigate('PlayerDetailsScreen');
+      if (updatePlayer && updateError) {
+        updatePlayer(currentPlayer);
+        // remove the previous error message
+        updateError('');
+      }
+      navigate('PlayerDetailsScreen');
+    } catch (err) {
+      console.log('error:', err);
+      if (updateError) {
+        updateError('Erreur lors du chargement des données');
+      }
+    }
   };
+
   return (
     <MainContainer onPress={handleOnPress}>
       <Text>

@@ -1,15 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
 import { filteredPlayersByName, filteredPlayersByPositions } from '../utils/filterPlayers';
 import { ButtonText, PositionSelectionModal } from '../modals/PositionSelection';
 import { PlayerCard } from './PlayerCard';
+import { PlayerContext } from '../contexts/player.context';
+import { Error } from './Error';
 
 export const Players = ({ players }: any) => {
   const [searchName, setSearchName] = useState<string>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [checkedPositions, setCheckedPositions] = useState<string[] | []>([]);
+  const { error } = useContext(PlayerContext) ?? {};
 
   const filteredPlayers = useMemo(() => {
     if (players) {
@@ -48,6 +51,7 @@ export const Players = ({ players }: any) => {
           <ButtonText>Positions</ButtonText>
         </ShowModalButton>
       </TitleContainer>
+      {error && <Error title={error} />}
       <FlatList
         data={filteredPlayers}
         renderItem={({ item }) => (

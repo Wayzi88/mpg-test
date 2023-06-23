@@ -14,4 +14,5 @@ export const LoadingSpinner = () => {
 const Container = styled(View)`
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
