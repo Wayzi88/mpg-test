@@ -3,10 +3,11 @@ import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
 import { filteredPlayersByName, filteredPlayersByPositions } from '../utils/filterPlayers';
-import { ButtonText, PositionSelectionModal } from '../modals/PositionSelection';
+import { PositionSelectionModal } from '../modals/PositionSelection';
 import { PlayerCard } from './PlayerCard';
 import { PlayerContext } from '../contexts/player.context';
 import { Error } from './Error';
+import { Button } from './Button';
 
 export const Players = ({ players }: any) => {
   const [searchName, setSearchName] = useState<string>();
@@ -42,14 +43,14 @@ export const Players = ({ players }: any) => {
             placeholder="Chercher par joueur"
           />
         </NameContainer>
-        <ShowModalButton
-          style={{ elevation: 2 }}
-          onPress={() => {
+        <Button
+          handleOnPress={() => {
             setModalVisible(true);
           }}
-        >
-          <ButtonText>Positions</ButtonText>
-        </ShowModalButton>
+          title="Positions"
+          color={colors.primary}
+          small
+        />
       </TitleContainer>
       {error && <Error title={error} />}
       <FlatList

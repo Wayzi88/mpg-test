@@ -1,9 +1,10 @@
 import React, { useState, type Dispatch, type SetStateAction } from 'react';
-import { StyleSheet, Modal, View, Text, Pressable } from 'react-native';
+import { StyleSheet, Modal, View, Text } from 'react-native';
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
 import Checkbox from 'expo-checkbox';
 import { PositionEnum } from '../enums/position.enum';
+import { Button } from '../components/Button';
 
 interface PositionSelectionModalProps {
   modalVisible: boolean;
@@ -69,13 +70,8 @@ export const PositionSelectionModal = ({
               </CheckBoxContainer>
             ))}
           </CheckBoxesContainer>
-
-          <FilterButton style={styles.button} onPress={handleOnValidate} color={colors.primary}>
-            <ButtonText>Valider</ButtonText>
-          </FilterButton>
-          <FilterButton style={styles.button} onPress={handleOnReset} color={colors.secondary}>
-            <ButtonText>Réinitialiser</ButtonText>
-          </FilterButton>
+          <Button title="Valider" handleOnPress={handleOnValidate} color={colors.primary} />
+          <Button title="Réinitialiser" handleOnPress={handleOnReset} color={colors.secondary} />
         </ModalContentContainer>
       </ModalContainer>
     </Modal>
@@ -127,22 +123,3 @@ const CheckBoxContainer = styled(View)`
 const PlayerPosition = styled(Text)`
   margin-left: 10px;
 `;
-
-const FilterButton = styled(Pressable)<FilterButtonProps>`
-  border-radius: 10px;
-  padding: 20px 30px;
-  width: 60%;
-  /* background-color: ${colors.primary}; */
-  background-color: ${(props: FilterButtonProps) => props.color};
-  margin-top: 10px;
-`;
-
-export const ButtonText = styled(Text)`
-  font-weight: bold;
-  color: ${colors.white};
-  text-align: center;
-`;
-
-interface FilterButtonProps {
-  color: string;
-}
